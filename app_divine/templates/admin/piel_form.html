@@ -1,0 +1,21 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block titulo %}Cuidado de la piel{% endblock %}
+
+{% block contenido_admin %}
+<h1 class="titulo-seccion">{{ titulo_form }}</h1>
+<form method="post" enctype="multipart/form-data" class="formulario-simple">
+    {% csrf_token %}
+    {% for campo in formulario %}
+    <div class="grupo-campos">
+        <label class="etiqueta" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo }}
+        {% if campo.errors %}
+            <div class="errores">{{ campo.errors|join:", " }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="boton-principal">Guardar</button>
+    <a class="boton-secundario" href="{% url 'admin_piel_lista' %}">Cancelar</a>
+</form>
+{% endblock %}

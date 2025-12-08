@@ -1,0 +1,46 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Perfil{% endblock %}
+
+{% block contenido_principal %}
+<section class="perfil-seccion">
+    <h1 class="titulo-seccion">Mi perfil</h1>
+    <div class="tarjeta-perfil">
+        <h2>Datos personales</h2>
+        <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+        <p><strong>Correo:</strong> {{ usuario.correo_electronico }}</p>
+        <p><strong>Fecha de nacimiento:</strong> {{ usuario.fecha_nacimiento }}</p>
+        <p><strong>Dirección:</strong> {{ usuario.direccion }}</p>
+        <p><strong>Rol:</strong> {% if usuario.es_admin %}Administrador{% else %}Cliente{% endif %}</p>
+    </div>
+    <div class="historial-pedidos">
+        <h2>Pedidos realizados</h2>
+        {% if pedidos %}
+        <table class="tabla-pedidos">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Subtotal</th>
+                    <th>Método</th>
+                    <th>Envío</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                    <td>${{ pedido.subtotal }}</td>
+                    <td>{{ pedido.formapago|title }}</td>
+                    <td>${{ pedido.envio }}</td>
+                    <td><pre class="detalle-pedido">{{ pedido.detalle }}</pre></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="sin-resultados">No has realizado pedidos todavía.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

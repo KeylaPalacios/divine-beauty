@@ -1,0 +1,43 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Productos{% endblock %}
+
+{% block contenido_principal %}
+<section class="encabezado-seccion">
+    <h1 class="titulo-seccion">Catálogo de productos</h1>
+    <p class="texto-categoria">Mostrando: {{ categoria_legible }}</p>
+</section>
+<div class="tarjetas">
+    {% for producto in productos %}
+    <article class="tarjeta-producto">
+        <a href="{% url 'detalle_producto' producto.tipo_slug producto.id %}" class="tarjeta-enlace">
+            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion|truncatechars:140 }}</p>
+            <p class="precio-card">${{ producto.precio }}</p>
+        </a>
+    </article>
+    {% empty %}
+    <p class="sin-resultados">No hay productos disponibles en esta categoría.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var categoriaActual = "{{ categoria_actual }}";
+    var submenu = document.getElementById("submenu-productos");
+    if (submenu) {
+        var enlaces = submenu.querySelectorAll("a");
+        enlaces.forEach(function (enlace) {
+            if (enlace.dataset.categoria === categoriaActual) {
+                enlace.classList.add("activo");
+            } else {
+                enlace.classList.remove("activo");
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

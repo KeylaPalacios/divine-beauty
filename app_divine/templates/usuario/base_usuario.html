@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DivineBeauty - {% block titulo %}Inicio{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+<div class="cuerpo-general">
+    <nav class="barra-lateral">
+        <a href="{% url 'inicio' %}">Inicio</a>
+        <a href="{% url 'novedades' %}">Novedades</a>
+        <div class="contenedor-submenu">
+            <button type="button" class="boton-submenu" id="boton-submenu-productos">Productos</button>
+            <div class="lista-submenu" id="submenu-productos">
+                <a href="{% url 'productos' %}?categoria=todos" data-categoria="todos">Todos</a>
+                <a href="{% url 'productos' %}?categoria=cabello" data-categoria="cabello">Cabello</a>
+                <a href="{% url 'productos' %}?categoria=maquillaje" data-categoria="maquillaje">Maquillaje</a>
+                <a href="{% url 'productos' %}?categoria=cuidado" data-categoria="cuidado">Cuidado de la piel</a>
+                <a href="{% url 'productos' %}?categoria=perfumes" data-categoria="perfumes">Perfumes</a>
+            </div>
+        </div>
+        <a href="{% url 'contacto' %}">Contacto</a>
+    </nav>
+    <div class="zona-derecha">
+        <header class="encabezado">
+            <div class="titulo-sitio">DivineBeauty</div>
+            <p class="saludo">
+                {% if usuario_en_sesion %}
+                Hola {{ usuario_en_sesion.nombre }}
+                {% else %}
+                Hola invitado
+                {% endif %}
+            </p>
+            <div class="iconos-header">
+                {% if usuario_en_sesion %}
+                    <a class="icono-header" href="{% url 'perfil_usuario' %}" title="Perfil">🙍</a>
+                    <a class="icono-header" href="{% url 'carrito' %}" title="Carrito">🛒</a>
+                    {% if usuario_en_sesion.es_admin %}
+                        <a class="icono-header" href="{% url 'panel_admin' %}" title="Panel Admin">🛠️</a>
+                    {% endif %}
+                    <a class="icono-header" href="{% url 'cerrar_sesion' %}" title="Cerrar sesión">🚪</a>
+                {% else %}
+                    <a class="icono-header" href="{% url 'iniciar_sesion' %}" title="Iniciar sesión">🔑</a>
+                    <a class="icono-header" href="{% url 'registrarse' %}" title="Registro">📝</a>
+                {% endif %}
+            </div>
+        </header>
+        {% if messages %}
+        <div class="contenedor-mensajes">
+            {% for mensaje in messages %}
+            <div class="mensaje">{{ mensaje }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <main class="contenido-principal">
+            {% block contenido_principal %}{% endblock %}
+        </main>
+        <footer class="pie">
+            <img src="{% static 'imagenes/logo_footer.png' %}" alt="Logotipo de Construye Aplicaciones Web" class="pie-logo">
+            Keyla Paola Palacios Espinoza 5-J
+        </footer>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var botonSubmenu = document.getElementById("boton-submenu-productos");
+    var submenu = document.getElementById("submenu-productos");
+    if (botonSubmenu) {
+        botonSubmenu.addEventListener("click", function () {
+            submenu.classList.toggle("activo");
+        });
+    }
+});
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

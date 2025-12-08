@@ -1,0 +1,22 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Iniciar sesión{% endblock %}
+
+{% block contenido_principal %}
+<section class="formulario-seccion">
+    <h1 class="titulo-seccion">Iniciar sesión</h1>
+    <form method="post" class="formulario-simple">
+        {% csrf_token %}
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.correo_electronico.id_for_label }}">Correo electrónico</label>
+            {{ formulario.correo_electronico }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.contrasena.id_for_label }}">Contraseña</label>
+            {{ formulario.contrasena }}
+        </div>
+        <button type="submit" class="boton-principal">Entrar</button>
+    </form>
+    <p class="texto-formulario">¿No tienes una cuenta? <a class="enlace" href="{% url 'registrarse' %}">Regístrate aquí</a></p>
+</section>
+{% endblock %}

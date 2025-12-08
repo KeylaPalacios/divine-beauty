@@ -1,0 +1,61 @@
+{% extends 'usuario/base_usuario.html' %}
+{% load static %}
+{% block titulo %}Carrito{% endblock %}
+
+{% block contenido_principal %}
+<section class="carrito-seccion">
+    <h1 class="titulo-seccion">Tu carrito de compras</h1>
+    {% if items %}
+    <form action="{% url 'actualizar_carrito' %}" method="post">
+        {% csrf_token %}
+        <table class="tabla-carrito">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td class="celda-producto">
+                        {% if item.imagen %}
+                            <img src="{{ item.imagen }}" alt="{{ item.nombre }}">
+                        {% else %}
+                            <img src="{% static 'imagenes/placeholder.png' %}" alt="Imagen no disponible">
+                        {% endif %}
+                        <div class="nombre-producto">{{ item.nombre }}</div>
+                    </td>
+                    <td>${{ item.precio }}</td>
+                    <td>
+                        <input type="number" name="cantidad_{% autoescape off %}{{ item.clave }}{% endautoescape %}" value="{{ item.cantidad }}" min="1" class="campo-numero">
+                    </td>
+                    <td>${{ item.total_linea }}</td>
+                    <td>
+                        <a class="boton-secundario" href="{% url 'eliminar_item_carrito' item.clave %}">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="boton-principal boton-actualizar">Actualizar cantidades</button>
+    </form>
+    <div class="totales-carrito">
+        <p>Subtotal: ${{ subtotal }}</p>
+        <p>Impuestos (16%): ${{ impuestos }}</p>
+        <p>Envío: ${{ envio }}</p>
+        <p class="total-final">Total: ${{ total }}</p>
+    </div>
+    <div class="acciones-carrito">
+        <a class="boton-secundario" href="{% url 'productos' %}">Seguir comprando</a>
+        <a class="boton-principal" href="{% url 'procesar_pago' %}">Comprar ahora</a>
+    </div>
+    {% else %}
+    <p class="sin-resultados">Tu carrito está vacío.</p>
+    <a class="boton-principal" href="{% url 'productos' %}">Ir a productos</a>
+    {% endif %}
+</section>
+{% endblock %}

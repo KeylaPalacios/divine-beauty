@@ -1,0 +1,38 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block titulo %}Panel{% endblock %}
+
+{% block contenido_admin %}
+<section class="panel-resumen">
+    <h1 class="titulo-seccion">Resumen general</h1>
+    <div class="tarjetas">
+        <div class="tarjeta-resumen">
+            <h2>Cabello</h2>
+            <p>{{ total_cabello }} productos</p>
+        </div>
+        <div class="tarjeta-resumen">
+            <h2>Maquillaje</h2>
+            <p>{{ total_maquillaje }} productos</p>
+        </div>
+        <div class="tarjeta-resumen">
+            <h2>Cuidado de la piel</h2>
+            <p>{{ total_piel }} productos</p>
+        </div>
+        <div class="tarjeta-resumen">
+            <h2>Perfumes</h2>
+            <p>{{ total_perfumes }} productos</p>
+        </div>
+        <div class="tarjeta-resumen">
+            <h2>Usuarios</h2>
+            <p>{{ total_usuarios }}</p>
+        </div>
+        <div class="tarjeta-resumen">
+            <h2>Pedidos</h2>
+            <p>{{ total_pedidos }}</p>
+        </div>
+    </div>
+    <div class="ingresos-resumen">
+        <p>Ingresos acumulados por subtotal: ${{ ingresos }}</p>
+    </div>
+</section>
+{% endblock %}

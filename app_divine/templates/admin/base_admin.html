@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DivineBeauty Admin - {% block titulo %}Panel{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+<div class="admin-layout">
+    <nav class="admin-lateral">
+        <div class="admin-logo">DivineBeauty</div>
+        <a href="{% url 'panel_admin' %}">Panel</a>
+        <a href="{% url 'admin_cabello_lista' %}">Cabello</a>
+        <a href="{% url 'admin_maquillaje_lista' %}">Maquillaje</a>
+        <a href="{% url 'admin_piel_lista' %}">Cuidado de la piel</a>
+        <a href="{% url 'admin_perfumes_lista' %}">Perfumes</a>
+        <a href="{% url 'admin_usuarios_lista' %}">Usuarios</a>
+        <a href="{% url 'admin_pedidos_lista' %}">Pedidos</a>
+        <a href="{% url 'inicio' %}">Ir al sitio</a>
+    </nav>
+    <div class="admin-principal">
+        <header class="encabezado admin-encabezado">
+            <div class="titulo-sitio">Panel Administrativo</div>
+            <p class="saludo">
+                {% if usuario_en_sesion %}
+                Hola {{ usuario_en_sesion.nombre }}
+                {% else %}
+                Hola invitado
+                {% endif %}
+            </p>
+            <div class="iconos-header">
+                <a class="icono-header" href="{% url 'cerrar_sesion' %}" title="Cerrar sesión">🚪</a>
+            </div>
+        </header>
+        {% if messages %}
+        <div class="contenedor-mensajes">
+            {% for mensaje in messages %}
+            <div class="mensaje">{{ mensaje }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <main class="contenido-principal">
+            {% block contenido_admin %}{% endblock %}
+        </main>
+        <footer class="pie">
+            <img src="{% static 'imagenes/logo_footer.png' %}" alt="Logotipo de Construye Aplicaciones Web" class="pie-logo">
+            Keyla Paola Palacios Espinoza 5-J
+        </footer>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido_principal %}
+<section class="portada">
+    <h1 class="titulo-principal">DivineBeauty</h1>
+    <p class="texto-eslogan">Realza tu esencia con productos pensados para ti.</p>
+</section>
+
+<section class="carrusel-seccion">
+    <div class="carrusel" id="carrusel">
+        {% for item in carrusel %}
+        <a href="{% url 'productos' %}?categoria={{ item.categoria_slug }}" class="carrusel-item{% if forloop.first %} visible{% endif %}">
+            <img src="{{ item.imagen }}" alt="{{ item.titulo }}">
+            <div class="carrusel-texto">{{ item.titulo }}</div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="controles-carrusel">
+        <button type="button" class="boton-carrusel" id="anterior">◀</button>
+        <button type="button" class="boton-carrusel" id="siguiente">▶</button>
+    </div>
+</section>
+
+<section class="tarjetas-promocionales">
+    <h2 class="subtitulo-seccion">Colecciones destacadas</h2>
+    <div class="tarjetas">
+        {% for producto in destacados %}
+        <article class="tarjeta-producto">
+            <a href="{% url 'detalle_producto' producto.tipo_slug producto.id %}" class="tarjeta-enlace">
+                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+                <h3>{{ producto.nombre }}</h3>
+                <p>{{ producto.descripcion|truncatechars:120 }}</p>
+                <p class="precio-card">${{ producto.precio }}</p>
+            </a>
+        </article>
+        {% empty %}
+        <p class="sin-resultados">Aún no hay productos destacados.</p>
+        {% endfor %}
+    </div>
+</section>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var carruselItems = document.querySelectorAll(".carrusel-item");
+    var indice = 0;
+    var anterior = document.getElementById("anterior");
+    var siguiente = document.getElementById("siguiente");
+
+    function mostrarIndice(posicion) {
+        carruselItems.forEach(function (elemento, punto) {
+            if (punto === posicion) {
+                elemento.classList.add("visible");
+            } else {
+                elemento.classList.remove("visible");
+            }
+        });
+    }
+
+    function mover(direccion) {
+        indice = indice + direccion;
+        if (indice < 0) {
+            indice = carruselItems.length - 1;
+        }
+        if (indice >= carruselItems.length) {
+            indice = 0;
+        }
+        mostrarIndice(indice);
+    }
+
+    if (carruselItems.length > 0) {
+        mostrarIndice(indice);
+        if (anterior) {
+            anterior.addEventListener("click", function () {
+                mover(-1);
+            });
+        }
+        if (siguiente) {
+            siguiente.addEventListener("click", function () {
+                mover(1);
+            });
+        }
+        setInterval(function () {
+            mover(1);
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

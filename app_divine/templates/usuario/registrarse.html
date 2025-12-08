@@ -1,0 +1,42 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Registro{% endblock %}
+
+{% block contenido_principal %}
+<section class="formulario-seccion">
+    <h1 class="titulo-seccion">Crear cuenta</h1>
+    <form method="post" class="formulario-simple">
+        {% csrf_token %}
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.nombre.id_for_label }}">Nombre</label>
+            {{ formulario.nombre }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.apellido.id_for_label }}">Apellido</label>
+            {{ formulario.apellido }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.fecha_nacimiento.id_for_label }}">Fecha de nacimiento</label>
+            {{ formulario.fecha_nacimiento }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.correo_electronico.id_for_label }}">Correo electrónico</label>
+            {{ formulario.correo_electronico }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.direccion.id_for_label }}">Dirección</label>
+            {{ formulario.direccion }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.contrasena.id_for_label }}">Contraseña</label>
+            {{ formulario.contrasena }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.confirmar_contrasena.id_for_label }}">Confirmar contraseña</label>
+            {{ formulario.confirmar_contrasena }}
+        </div>
+        <button type="submit" class="boton-principal">Registrarme</button>
+    </form>
+    <p class="texto-formulario">¿Ya tienes cuenta? <a class="enlace" href="{% url 'iniciar_sesion' %}">Inicia sesión</a></p>
+</section>
+{% endblock %}

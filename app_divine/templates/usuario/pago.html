@@ -1,0 +1,78 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}Pago{% endblock %}
+
+{% block contenido_principal %}
+<section class="pago-seccion">
+    <h1 class="titulo-seccion">Finalizar compra</h1>
+    <div class="resumen-pago">
+        <p>Subtotal: ${{ subtotal }}</p>
+        <p>Impuestos: ${{ impuestos }}</p>
+        <p>Envío: ${{ envio }}</p>
+        <p class="total-final">Total a pagar: ${{ total }}</p>
+    </div>
+    <form method="post" class="formulario-pago">
+        {% csrf_token %}
+        <div class="grupo-campos">
+            <label for="{{ formulario.metodo.id_for_label }}" class="etiqueta">Método de pago</label>
+            {{ formulario.metodo }}
+        </div>
+        <div class="grupo-campos grupo-tarjeta">
+            <label class="etiqueta" for="{{ formulario.nombre_tarjeta.id_for_label }}">Nombre en la tarjeta</label>
+            {{ formulario.nombre_tarjeta }}
+            <label class="etiqueta" for="{{ formulario.numero_tarjeta.id_for_label }}">Número de tarjeta</label>
+            {{ formulario.numero_tarjeta }}
+            <div class="fila-doble">
+                <div>
+                    <label class="etiqueta" for="{{ formulario.mes_vencimiento.id_for_label }}">Mes</label>
+                    {{ formulario.mes_vencimiento }}
+                </div>
+                <div style="margin-left: 40px;">
+                    <label class="etiqueta" for="{{ formulario.anio_vencimiento.id_for_label }}">Año</label>
+                    {{ formulario.anio_vencimiento }}
+                </div>
+            </div>
+            <label class="etiqueta" for="{{ formulario.cvv.id_for_label }}">CVV</label>
+            {{ formulario.cvv }}
+        </div>
+        <div class="grupo-campos grupo-paypal">
+            <label class="etiqueta" for="{{ formulario.correo_paypal.id_for_label }}">Correo de PayPal</label>
+            {{ formulario.correo_paypal }}
+        </div>
+        <div class="grupo-campos">
+            <label class="etiqueta" for="{{ formulario.domicilio.id_for_label }}">Dirección de envío</label>
+            {{ formulario.domicilio }}
+        </div>
+        <button type="submit" class="boton-principal">Confirmar compra</button>
+    </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var selectorMetodo = document.getElementById("id_metodo");
+    var grupoTarjeta = document.querySelector(".grupo-tarjeta");
+    var grupoPayPal = document.querySelector(".grupo-paypal");
+
+    function actualizarCampos() {
+        if (!selectorMetodo) {
+            return;
+        }
+        var valor = selectorMetodo.value;
+        if (valor === "tarjeta") {
+            grupoTarjeta.style.display = "block";
+            grupoPayPal.style.display = "none";
+        } else if (valor === "paypal") {
+            grupoTarjeta.style.display = "none";
+            grupoPayPal.style.display = "block";
+        }
+    }
+
+    if (selectorMetodo) {
+        selectorMetodo.addEventListener("change", actualizarCampos);
+        actualizarCampos();
+    }
+});
+</script>
+{% endblock %}

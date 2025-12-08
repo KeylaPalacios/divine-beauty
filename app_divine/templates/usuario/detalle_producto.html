@@ -1,0 +1,24 @@
+{% extends 'usuario/base_usuario.html' %}
+
+{% block titulo %}{{ producto.nombre }}{% endblock %}
+
+{% block contenido_principal %}
+<section class="detalle-producto">
+    <div class="detalle-imagen">
+        <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+    </div>
+    <div class="detalle-info">
+        <h1>{{ producto.nombre }}</h1>
+        <p class="detalle-categoria">{{ producto.categoria }}</p>
+        <p class="detalle-descripcion">{{ producto.descripcion }}</p>
+        <p class="detalle-precio">${{ producto.precio }}</p>
+        <p class="detalle-stock">Stock disponible: {{ producto.stock }}</p>
+        <form action="{% url 'agregar_carrito' producto.tipo_slug producto.id %}" method="post" class="formulario-carrito">
+            {% csrf_token %}
+            <label for="cantidad" class="etiqueta">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad" min="1" value="1" class="campo-texto">
+            <button type="submit" class="boton-principal">Agregar al carrito</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

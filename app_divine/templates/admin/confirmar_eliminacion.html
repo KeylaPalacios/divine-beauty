@@ -1,0 +1,16 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block titulo %}Confirmar{% endblock %}
+
+{% block contenido_admin %}
+<section class="confirmacion-eliminar">
+    <h1 class="titulo-seccion">{{ titulo }}</h1>
+    <p class="texto-confirmacion">¿Seguro que deseas eliminar este registro?</p>
+    <p class="texto-confirmacion"><strong>{{ objeto }}</strong></p>
+    <form method="post" class="formulario-confirmacion">
+        {% csrf_token %}
+        <button type="submit" class="boton-principal">Sí, eliminar</button>
+        <a class="boton-secundario" href="{{ url_cancelar }}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}
